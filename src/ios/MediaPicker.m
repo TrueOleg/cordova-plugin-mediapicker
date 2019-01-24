@@ -107,35 +107,51 @@
                 [self.commandDelegate sendPluginResult:plresult callbackId:callbackID];
                 break;
             }
-
+            NSLog(@"a1");
             NSNumber *duration = [song valueForProperty:MPMediaItemPropertyPlaybackDuration];
             NSString *genre = [song valueForProperty:MPMediaItemPropertyGenre];
-
+            NSLog(@"a2");
             AVURLAsset *songURL = [AVURLAsset URLAssetWithURL:songurl options:nil];
-
+            NSLog(@"a3");
             NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-
+            NSLog(@"a4");
             NSString *documentDir = [path objectAtIndex:0];
-
+            NSLog(@"a5");
             //NSLog(@"Compatible Preset for selected Song = %@", [AVAssetExportSession exportPresetsCompatibleWithAsset:songURL]);
 
             AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:songURL presetName:AVAssetExportPresetAppleM4A];
-
+            NSLog(@"a6");
             exporter.outputFileType = @"com.apple.m4a-audio";
-
+            NSLog(@"a7");
             NSString *filename = [NSString stringWithFormat:@"%@.m4a",title];
-
+            NSLog(@"a8");
             NSString *outputfile = [documentDir stringByAppendingPathComponent:filename];
-
+            NSLog(@"a9");
             [self delSingleSong:outputfile];
-
+            NSLog(@"a10");
             NSURL *exportURL = [NSURL fileURLWithPath:outputfile];
-
+            NSLog(@"a11");
             exporter.outputURL  = exportURL;
-
+            NSLog(@"a12");
+            NSURL *audioURL = exportURL;
+            NSLog(@"a12b");
+            NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
+            NSLog(@"a12c");
+            [songInfo setObject:[audioURL absoluteString] forKey:@"exportedurl"];
+            NSLog(@"a12d");
+            [songInfo setObject:filename forKey:@"filename"];
+            NSLog(@"a12e");
+            [songsList addObject:songInfo];
+            plresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:songsList];
+            NSLog(@"a13b");
+            [self.commandDelegate sendPluginResult:plresult callbackId:callbackID];
+            NSLog(@"a13c");
             [exporter exportAsynchronouslyWithCompletionHandler:^{
+                NSLog(@"a13d");
                 int exportStatus = exporter.status;
+                NSLog(@"a14");
                 completed++;
+                NSLog(@"a15");
                 switch (exportStatus) {
                     case AVAssetExportSessionStatusFailed:{
                         NSError *exportError = exporter.error;
@@ -188,8 +204,8 @@
                         //NSLog(@"Audio Data = %@",songsList);
                         NSLog(@"Export Completed = %d out of Total Selected = %d",completed,selcount);
                         if (completed == selcount) {
-                            plresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:songsList];
-                            [self.commandDelegate sendPluginResult:plresult callbackId:callbackID];
+                            // plresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:songsList];
+                            // [self.commandDelegate sendPluginResult:plresult callbackId:callbackID];
                         }
                         break;
                     }

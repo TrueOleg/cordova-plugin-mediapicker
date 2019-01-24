@@ -5,7 +5,7 @@ The plugin allows you to select the song from iOS music library and copy it in y
 
 ### Installation
 
-    cordova plugin add https://github.com/an-rahulpandey/cordova-plugin-mediapicker.git
+    cordova plugin add https://github.com/TrueOleg/cordova-plugin-mediapicker.git
 
 ### Methods & Usage
 
